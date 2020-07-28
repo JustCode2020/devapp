@@ -1,0 +1,8 @@
+@font-face {
+	font-family: Skarpa;
+	src: local(Skarpa), url(../fonts/skarpa-regular.ttf)
+}
+
+#page-home{
+    font-family: Skarpa;
+}

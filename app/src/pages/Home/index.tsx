@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { green, blue, grey } from '@material-ui/core/colors';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import '../../styles/index.css';
 
 const useStyles = makeStyles({
     page: {
@@ -34,10 +35,7 @@ const Home = () => {
                     <div className={theme.page} >
                         <div className="field">
                             <h1>Pontos cadastrados</h1>
-                        </div>
-                        <div className="field">
                             <AddCircleIcon style={{color:green[700]}}/>
-
                         </div>
                     </div>
                 </main>
