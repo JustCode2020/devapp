@@ -1,41 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import axios from 'axios';
 
-
-    const useGeoPosition = (key, address) => {
-        const [position, setPosition] = useState({ lat: null, lng: null });
-        const [error, setError] = useState(false);
-        const [loading, setLoading] = useState(false);
-
-        const fetchLatandLng = async () => {
-            try {
-                  setLoading(true);
-                  const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`);
-                  const result = res.data.results[0].geometry.location;
-    
-                  if (result.lat !== null && result.lng !== null) {
-                    setPosition({lat: result.lat, lng: result.lng})
-                  }
-                  else {
-                    setError(true);
-                  }
-                  setLoading(false);
-              }
-            catch (error) {
-               setLoading(false);
-               setError(true);
-            }
-          }
-    
-    
-          useEffect(() => {
-            fetchLatandLng();
-          }, [address])
-          
-          return [position, loading, error]
-        }  
-    
-        
-    
-
-export default useGeoPosition;
+const containerStyle = {
+  width: '400px',
+  height: '400px'
+};
+ 
+const center = {
+  lat: -3.745,
+  lng: -38.523
+};
+ 
+function MyComponent() {
+  const [map, setMap] = useState(null)
+ 
+  const onLoad = useCallback(function callback(map) {
+    const bounds = new window.google.maps.LatLngBounds();
+    map.fitBounds(bounds);
+    setMap(map)
+  }, [])
+ 
+  const onUnmount = useCallback(function callback(map) {
+    setMap(null)
+  }, [])
+ 
+  return (
+    <LoadScript
+      googleMapsApiKey="YOUR_API_KEY"
+    >
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={10}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+      >
+        { /* Child components, such as markers, info windows, etc. */ }
+        <></>
+      </GoogleMap>
+    </LoadScript>
+  )
+}
+ 
+export default React.memo(MyComponent)
