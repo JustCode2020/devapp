@@ -1,46 +1,56 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
-import axios from 'axios';
+import {Map, TileLayer, Marker} from 'react-leaflet';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save';
+import "./App.css";
 
-const containerStyle = {
-  width: '400px',
-  height: '400px'
-};
- 
-const center = {
-  lat: -3.745,
-  lng: -38.523
-};
- 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+        width: '25ch',
+      },
+    },
+    button: {
+      margin: theme.spacing(1),
+    },
+  }),
+);
+
+
 function MyComponent() {
-  const [map, setMap] = useState(null)
- 
-  const onLoad = useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds();
-    map.fitBounds(bounds);
-    setMap(map)
-  }, [])
- 
-  const onUnmount = useCallback(function callback(map) {
-    setMap(null)
-  }, [])
- 
-  return (
-    <LoadScript
-      googleMapsApiKey="YOUR_API_KEY"
-    >
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-      >
-        { /* Child components, such as markers, info windows, etc. */ }
-        <></>
-      </GoogleMap>
-    </LoadScript>
-  )
+
+  const classes = useStyles();
+
+    return(
+         <Map center={[-23.3972861,-46.3912693]} zoom={15}>
+            <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={[-23.3972861,-46.3912693]}/>
+            <div className={classes.root}>
+            <TextField id="outlined-basic" label="Bus Stop Title" variant="outlined" />
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              className={classes.button}
+              startIcon={<SaveIcon />}
+            >
+        Save
+      </Button>
+            </div>
+          </Map>
+            
+              
+            
+        
+        
+      
+    )
 }
- 
-export default React.memo(MyComponent)
+export default MyComponent
